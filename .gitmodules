@@ -1,0 +1,11 @@
+[submodule "Landing signalife"]
+	path = Landing signalife
+	url = https://github.com/josdndev/Landing-signalife.git
+
+[submodule "SignaApiv1"]
+	path = SignaApiv1
+	url = https://github.com/josdndev/SignaApiv1.git
+
+[submodule "SignaLife"]
+	path = SignaLife
+	url = https://github.com/josdndev/SignaLife.git
