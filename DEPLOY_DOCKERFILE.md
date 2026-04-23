@@ -6,6 +6,8 @@
 docker build -t signa-proyect:single .
 ```
 
+Este `Dockerfile` clona automáticamente `SignaLife` y `SignaApiv1` durante el build, así que funciona incluso si el proveedor no inicializa submódulos.
+
 ## Run (con DB persistente automática)
 
 ```bash

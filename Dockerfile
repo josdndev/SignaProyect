@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-pip \
     python3-venv \
     bash \
+    git \
     ca-certificates \
     curl \
     tini \
@@ -25,19 +26,25 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
+# These repos are cloned during build so deployment works even if submodules
+# are not initialized in the root checkout.
+ARG SIGNA_API_REPO_URL="https://github.com/josdndev/SignaApiv1.git"
+ARG SIGNA_API_REF="master"
+ARG SIGNA_WEB_REPO_URL="https://github.com/josdndev/SignaLife.git"
+ARG SIGNA_WEB_REF="main"
+
+RUN git clone --depth 1 --branch "${SIGNA_API_REF}" "${SIGNA_API_REPO_URL}" /app/SignaApiv1 \
+    && git clone --depth 1 --branch "${SIGNA_WEB_REF}" "${SIGNA_WEB_REPO_URL}" /app/SignaLife
+
 # Backend dependencies
-COPY SignaApiv1/requirements.txt /app/SignaApiv1/requirements.txt
 RUN pip3 install --no-cache-dir -r /app/SignaApiv1/requirements.txt
 
 # Frontend dependencies
-COPY SignaLife/package*.json /app/SignaLife/
 WORKDIR /app/SignaLife
 RUN npm ci
 
-# Application source
+# Startup script from root repo
 WORKDIR /app
-COPY SignaApiv1 /app/SignaApiv1
-COPY SignaLife /app/SignaLife
 COPY docker/start-single.sh /app/docker/start-single.sh
 
 # Build Next.js with internal API address for single-container deployment
