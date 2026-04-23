@@ -1,0 +1,10 @@
+.git
+.gitmodules
+**/.git
+**/node_modules
+**/.next
+**/.env
+**/*.log
+**/.DS_Store
+Landing signalife
+SignaApiv1/database.db
